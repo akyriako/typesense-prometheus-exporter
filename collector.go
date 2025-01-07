@@ -155,6 +155,8 @@ func (c *TypesenseCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // Collect fetches the metrics from the Typesense endpoint and sends them to the Prometheus channel
 func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
+	c.logger.Info("collecting metrics...", "namespace", c.namespace, "cluster", c.cluster, "endpoint", c.endPoint)
+
 	req, err := http.NewRequestWithContext(c.ctx, http.MethodGet, fmt.Sprintf("%s/metrics.json", c.endPoint), nil)
 	if err != nil {
 		c.logger.Error(fmt.Sprintf("error creating request: %v", err))
