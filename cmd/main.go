@@ -35,7 +35,7 @@ func init() {
 		Level: slog.Level(config.LogLevel),
 	}))
 
-	logger = logger.With("namespace", config.Namespace).With("cluster", config.Cluster)
+	//logger = logger.With("namespace", config.Namespace).With("cluster", config.Cluster)
 	slog.SetDefault(logger)
 }
 
@@ -75,5 +75,5 @@ func main() {
 		logger.Error(fmt.Sprintf("error during server shutdown: %v", err))
 		os.Exit(-1)
 	}
-	logger.Info("exporter shut down successfully.")
+	logger.Info("exporter shut down successfully")
 }

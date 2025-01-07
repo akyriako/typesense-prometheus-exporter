@@ -200,7 +200,11 @@ func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
 				c.logger.Error(fmt.Sprintf("error converting value for %s: %v", key, err))
 				continue
 			}
-			ch <- prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.namespace, c.cluster)
+
+			metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.namespace, c.cluster)
+			c.logger.Debug("collected metric", "fqName", key, "value", val)
+
+			ch <- metric
 		}
 	}
 }
