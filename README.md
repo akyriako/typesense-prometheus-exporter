@@ -2,14 +2,10 @@
 
 `typesense-prometheus-exporter` is a lightweight Prometheus exporter designed to expose metrics from a Typesense cluster for monitoring and alerting purposes. The exporter collects metrics from the Typesense `/metrics.json` endpoint and presents them in a Prometheus-compatible format, enriched with Kubernetes-specific labels.
 
----
-
 ### **Features**
 - Fetches and exposes key performance and resource utilization metrics from Typesense clusters.
 - Supports Kubernetes environments with labels for `namespace` and `typesense_cluster` for better observability.
 - Fully configurable through environment variables.
-
----
 
 ### **Usage**
 
@@ -82,8 +78,6 @@ spec:
         - containerPort: 9090
 ```
 
----
-
 ### **Configuration**
 
 The `typesense-prometheus-exporter` is configured via environment variables. Below is a table of the available configuration options:
@@ -99,8 +93,6 @@ The `typesense-prometheus-exporter` is configured via environment variables. Bel
 | `POD_NAMESPACE`      | `string` | `~empty`      | Yes          | The Kubernetes namespace where the pod is running.                  |
 | `TYPESENSE_CLUSTER`  | `string` | -             | Yes          | The name of the Typesense cluster, used for labeling metrics.       |
 
----
-
 ### **Metrics**
 The exporter gathers various metrics from the Typesense `/metrics.json` endpoint, including:
 - **CPU Utilization**: Per-core and overall CPU usage percentages.
@@ -112,8 +104,6 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 Each metric is labeled with:
 - `namespace`: The Kubernetes namespace where the exporter is running.
 - `typesense_cluster`: The name of the Typesense cluster.
-
----
 
 ### **Build and Push Docker Image**
 
@@ -128,8 +118,6 @@ make docker-push REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter
 ```
 
 Ensure the `REGISTRY`, `IMAGE_NAME`, and `TAG` variables are properly set.
-
----
 
 ### **License**
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
