@@ -69,7 +69,7 @@ func main() {
 						justify-content: center;
 						background-color: black;
 						color: white;
-						font-family: Arial, sans-serif;
+						font-family: Palanquin,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 					}
 					.container {
 						text-align: center;
