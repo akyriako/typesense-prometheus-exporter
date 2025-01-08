@@ -84,7 +84,7 @@ The `typesense-prometheus-exporter` is configured via environment variables. Bel
 
 | **Variable**         | **Type** | **Default** | **Required** | **Description**                                                     |
 |----------------------|----------|-------------|--------------|---------------------------------------------------------------------|
-| `LOG_LEVEL`          | `int`    | `0`         | No           | Log level: `0` (info), `1` (debug), `2` (trace).                    |
+| `LOG_LEVEL`          | `int`    | `0`         | No           | Log level: `-4` (debug),`0` (info), `4` (warn), `8` (error)         |
 | `TYPESENSE_API_KEY`  | `string` | -           | Yes          | The API key for accessing the Typesense cluster.                    |
 | `TYPESENSE_HOST`     | `string` | -           | Yes          | The host address of the Typesense instance.                         |
 | `TYPESENSE_PORT`     | `uint`   | `8108`      | Yes          | The port number of the Typesense API endpoint.                      |
