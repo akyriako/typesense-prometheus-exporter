@@ -6,7 +6,7 @@
 
 ### **Features**
 - Fetches and exposes key performance and resource utilization metrics from Typesense clusters.
-- Supports Kubernetes environments with labels for `namespace` and `cluster` for better observability.
+- Supports Kubernetes environments with labels for `namespace` and `typesense_cluster` for better observability.
 - Fully configurable through environment variables.
 
 ---
@@ -35,7 +35,7 @@
    ```
 
 #### **Running in Kubernetes**
-Deploy the exporter as a pod in your Kubernetes cluster. Here’s a sample YAML manifest for a Deployment:
+Deploy the exporter as a pod in your Kubernetes cluster:
 
 ```yaml
 apiVersion: apps/v1
@@ -111,7 +111,7 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 
 Each metric is labeled with:
 - `namespace`: The Kubernetes namespace where the exporter is running.
-- `cluster_name`: The name of the Typesense cluster.
+- `typesense_cluster`: The name of the Typesense cluster.
 
 ---
 
