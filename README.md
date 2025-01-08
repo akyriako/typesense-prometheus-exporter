@@ -25,7 +25,7 @@
    ```bash
    LOG_LEVEL=1 TYPESENSE_API_KEY=your-api-key \
    TYPESENSE_HOST=your-host TYPESENSE_PORT=8108 \
-   METRICS_PORT=9090 TYPESENSE_PROTOCOL=http \
+   METRICS_PORT=8908 TYPESENSE_PROTOCOL=http \
    POD_NAMESPACE=default TYPESENSE_CLUSTER=your-cluster-name \
    ./cmd/typesense-prometheus-exporter
    ```
@@ -38,7 +38,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: typesense-prometheus-exporter
-  namespace: monitoring
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -65,7 +65,7 @@ spec:
         - name: TYPESENSE_PORT
           value: "8108"
         - name: METRICS_PORT
-          value: "9090"
+          value: "8908"
         - name: TYPESENSE_PROTOCOL
           value: "http"
         - name: POD_NAMESPACE
@@ -75,23 +75,23 @@ spec:
         - name: TYPESENSE_CLUSTER
           value: "your-cluster-name"
         ports:
-        - containerPort: 9090
+        - containerPort: 8908
 ```
 
 ### **Configuration**
 
 The `typesense-prometheus-exporter` is configured via environment variables. Below is a table of the available configuration options:
 
-| **Variable**         | **Type** | **Default**   | **Required** | **Description**                                                     |
-|-----------------------|----------|---------------|--------------|---------------------------------------------------------------------|
-| `LOG_LEVEL`          | `int`    | `0`           | No           | Log level: `0` (info), `1` (debug), `2` (trace).                    |
-| `TYPESENSE_API_KEY`  | `string` | -             | Yes          | The API key for accessing the Typesense cluster.                    |
-| `TYPESENSE_HOST`     | `string` | -             | Yes          | The host address of the Typesense instance.                         |
-| `TYPESENSE_PORT`     | `uint`   | `8108`        | Yes          | The port number of the Typesense API endpoint.                      |
-| `METRICS_PORT`       | `uint`   | `9090`        | Yes          | The port number for serving the Prometheus metrics endpoint.        |
-| `TYPESENSE_PROTOCOL` | `string` | `http`        | Yes          | Protocol used for communication with Typesense (`http` or `https`). |
-| `POD_NAMESPACE`      | `string` | `~empty`      | Yes          | The Kubernetes namespace where the pod is running.                  |
-| `TYPESENSE_CLUSTER`  | `string` | -             | Yes          | The name of the Typesense cluster, used for labeling metrics.       |
+| **Variable**         | **Type** | **Default** | **Required** | **Description**                                                     |
+|----------------------|----------|-------------|--------------|---------------------------------------------------------------------|
+| `LOG_LEVEL`          | `int`    | `0`         | No           | Log level: `0` (info), `1` (debug), `2` (trace).                    |
+| `TYPESENSE_API_KEY`  | `string` | -           | Yes          | The API key for accessing the Typesense cluster.                    |
+| `TYPESENSE_HOST`     | `string` | -           | Yes          | The host address of the Typesense instance.                         |
+| `TYPESENSE_PORT`     | `uint`   | `8108`      | Yes          | The port number of the Typesense API endpoint.                      |
+| `METRICS_PORT`       | `uint`   | `8908`      | Yes          | The port number for serving the Prometheus metrics endpoint.        |
+| `TYPESENSE_PROTOCOL` | `string` | `http`      | Yes          | Protocol used for communication with Typesense (`http` or `https`). |
+| `POD_NAMESPACE`      | `string` | `~empty`    | Yes          | The Kubernetes namespace where the pod is running.                  |
+| `TYPESENSE_CLUSTER`  | `string` | -           | Yes          | The name of the Typesense cluster, used for labeling metrics.       |
 
 ### **Metrics**
 The exporter gathers various metrics from the Typesense `/metrics.json` endpoint, including:
