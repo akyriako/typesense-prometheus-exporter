@@ -112,7 +112,9 @@ You can build and push the Docker image using the provided `Makefile`.
 ```bash
 # Build the Docker image
 make docker-build REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter TAG=latest
+```
 
+```bash
 # Push the Docker image to the registry
 make docker-push REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter TAG=latest
 ```
