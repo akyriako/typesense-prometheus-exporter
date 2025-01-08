@@ -18,24 +18,22 @@ type TypesenseCollector struct {
 	logger     *slog.Logger
 	endPoint   string
 	apiKey     string
-	namespace  string
 	cluster    string
 	httpClient *http.Client
 	metrics    map[string]*prometheus.Desc
 }
 
 var (
-	labels = []string{"namespace", "typesense_cluster"}
+	labels = []string{"typesense_cluster"}
 )
 
 func NewTypesenseCollector(ctx context.Context, logger *slog.Logger, config Config) *TypesenseCollector {
 	collector := &TypesenseCollector{
-		ctx:       ctx,
-		logger:    logger,
-		endPoint:  fmt.Sprintf("%s://%s:%d", config.Protocol, config.Host, config.ApiPort),
-		apiKey:    config.ApiKey,
-		namespace: config.Namespace,
-		cluster:   config.Cluster,
+		ctx:      ctx,
+		logger:   logger,
+		endPoint: fmt.Sprintf("%s://%s:%d", config.Protocol, config.Host, config.ApiPort),
+		apiKey:   config.ApiKey,
+		cluster:  config.Cluster,
 		httpClient: &http.Client{
 			Timeout: 500 * time.Millisecond,
 		},
@@ -155,7 +153,7 @@ func (c *TypesenseCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // Collect fetches the metrics from the Typesense endpoint and sends them to the Prometheus channel
 func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
-	c.logger.Info("collecting metrics...", "namespace", c.namespace, "cluster", c.cluster, "endpoint", c.endPoint)
+	c.logger.Info("collecting metrics...", "cluster", c.cluster, "endpoint", c.endPoint)
 
 	req, err := http.NewRequestWithContext(c.ctx, http.MethodGet, fmt.Sprintf("%s/metrics.json", c.endPoint), nil)
 	if err != nil {
@@ -203,7 +201,7 @@ func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
 				continue
 			}
 
-			metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.namespace, c.cluster)
+			metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
 			c.logger.Debug("collected metric", "fqName", key, "value", val)
 
 			ch <- metric

@@ -49,56 +49,7 @@ func main() {
 	http.Handle("/metrics", promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		landingPage := `
-			<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Typesense Prometheus Exporter</title>
-				<style>
-					* {
-						margin: 0;
-						padding: 0;
-						box-sizing: border-box;
-					}
-					html, body {
-						height: 100%;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						background-color: black;
-						color: white;
-						font-family: Palanquin,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-					}
-					.container {
-						text-align: center;
-					}
-					img {
-						margin-top: 20px;
-						max-width: 200px;
-						height: auto;
-						margin-bottom: 20px;
-					}
-					a {
-						text-decoration: none;
-						color: #00bcd4;
-						font-size: 18px;
-					}
-					a:hover {
-						text-decoration: underline;
-					}
-				</style>
-			</head>
-			<body>
-				<div class="container">
-					<img src="https://prometheus.io/assets/prometheus_logo_grey.svg" alt="Prometheus Logo"/><br/>
-					<img src="https://typesense.org/_nuxt/img/typesense_logo_white.0f9fb0a.svg" alt="Typesense Logo"/>
-					<p><a href="/metrics">Go to Metrics</a></p>
-				</div>
-			</body>
-			</html>
-		`
+		landingPage := exporter.LandingPageTemplate
 		w.Write([]byte(landingPage))
 	})
 
