@@ -122,4 +122,4 @@ make docker-push REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter
 Ensure the `REGISTRY`, `IMAGE_NAME`, and `TAG` variables are properly set.
 
 ### **License**
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
