@@ -10,9 +10,11 @@
 ### **Usage**
 
 #### **Running Locally**
+
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/your-repo/typesense-prometheus-exporter.git
+   git clone https://github.com/akyriako/typesense-prometheus-exporter.git
    cd typesense-prometheus-exporter
    ```
 
@@ -22,6 +24,7 @@
    ```
 
 3. Run the binary with the required environment variables:
+
    ```bash
    LOG_LEVEL=1 TYPESENSE_API_KEY=your-api-key \
    TYPESENSE_HOST=your-host TYPESENSE_PORT=8108 \
