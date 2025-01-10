@@ -11,7 +11,7 @@ presents them in a Prometheus-compatible format.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/akyriako/typesense-prometheus-exporter.git
+   git clone https://github.com/your-fork/typesense-prometheus-exporter.git
    cd typesense-prometheus-exporter
    ```
 
