@@ -1,8 +1,8 @@
 # typesense-prometheus-exporter
 
 `typesense-prometheus-exporter` is a lightweight Prometheus exporter designed to expose metrics from a Typesense cluster 
-for monitoring and alerting purposes. The exporter collects metrics from the Typesense `/metrics.json` endpoint and 
-presents them in a Prometheus-compatible format.
+for monitoring and alerting purposes. The exporter collects metrics from the Typesense `/metrics.json` and 
+`stats.json` endpoints and presents them in a Prometheus-compatible format.
 
 ### **Usage**
 
@@ -100,7 +100,11 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 - **Network Activity**: Total bytes sent and received.
 - **Typesense-specific Metrics**: Fragmentation ratios, mapped memory, and more.
 
-Each metric is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch for metrics.
+> [!NOTE]
+> - Each **metric** is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch metrics from.
+> - Each **stat** is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch stats from,
+> and additionally with `endpoint` if is reporting back the latency of an endpoint.
+
 
 ### **Build and Push Docker Image**
 
