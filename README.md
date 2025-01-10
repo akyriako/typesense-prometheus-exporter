@@ -26,7 +26,7 @@ presents them in a Prometheus-compatible format.
    LOG_LEVEL=0 TYPESENSE_API_KEY=your-api-key \
    TYPESENSE_HOST=your-host TYPESENSE_PORT=8108 \
    METRICS_PORT=8908 TYPESENSE_PROTOCOL=http \
-   POD_NAMESPACE=default TYPESENSE_CLUSTER=your-cluster-name \
+   TYPESENSE_CLUSTER=your-cluster-name \
    ./cmd/typesense-prometheus-exporter
    ```
 
