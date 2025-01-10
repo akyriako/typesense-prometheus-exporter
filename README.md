@@ -46,7 +46,7 @@ spec:
       app: typesense-prometheus-exporter
   template:
     metadata:
-      labels:
+      metricLabels:
         app: typesense-prometheus-exporter
     spec:
       containers:
@@ -100,7 +100,7 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 - **Network Activity**: Total bytes sent and received.
 - **Typesense-specific Metrics**: Fragmentation ratios, mapped memory, and more.
 
-Each metric is labeled with `typesense_cluster` as the name of the Typesense cluster you want to scrape for metrics.
+Each metric is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch for metrics.
 
 ### **Build and Push Docker Image**
 

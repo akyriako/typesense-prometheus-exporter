@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -21,10 +22,13 @@ type TypesenseCollector struct {
 	cluster    string
 	httpClient *http.Client
 	metrics    map[string]*prometheus.Desc
+	stats      map[string]*prometheus.Desc
+	mutex      sync.Mutex
 }
 
 var (
-	labels = []string{"typesense_cluster"}
+	metricLabels   = []string{"typesense_cluster"}
+	endpointLabels = []string{"typesense_cluster", "endpoint"}
 )
 
 func NewTypesenseCollector(ctx context.Context, logger *slog.Logger, config Config) *TypesenseCollector {
@@ -37,108 +41,8 @@ func NewTypesenseCollector(ctx context.Context, logger *slog.Logger, config Conf
 		httpClient: &http.Client{
 			Timeout: 500 * time.Millisecond,
 		},
-		metrics: map[string]*prometheus.Desc{
-			"system_cpu1_active_percentage": prometheus.NewDesc(
-				"system_cpu1_active_percentage",
-				"System CPU core 1 active percentage",
-				labels, nil,
-			),
-			"system_cpu2_active_percentage": prometheus.NewDesc(
-				"system_cpu2_active_percentage",
-				"System CPU core 2 active percentage",
-				labels, nil,
-			),
-			"system_cpu3_active_percentage": prometheus.NewDesc(
-				"system_cpu3_active_percentage",
-				"System CPU core 3 active percentage",
-				labels, nil,
-			),
-			"system_cpu4_active_percentage": prometheus.NewDesc(
-				"system_cpu4_active_percentage",
-				"System CPU core 4 active percentage",
-				labels, nil,
-			),
-			"system_cpu_active_percentage": prometheus.NewDesc(
-				"system_cpu_active_percentage",
-				"System overall CPU active percentage",
-				labels, nil,
-			),
-			"system_disk_total_bytes": prometheus.NewDesc(
-				"system_disk_total_bytes",
-				"Total system disk space in bytes",
-				labels, nil,
-			),
-			"system_disk_used_bytes": prometheus.NewDesc(
-				"system_disk_used_bytes",
-				"Used system disk space in bytes",
-				labels, nil,
-			),
-			"system_memory_total_bytes": prometheus.NewDesc(
-				"system_memory_total_bytes",
-				"Total system memory in bytes",
-				labels, nil,
-			),
-			"system_memory_used_bytes": prometheus.NewDesc(
-				"system_memory_used_bytes",
-				"Used system memory in bytes",
-				labels, nil,
-			),
-			"system_memory_total_swap_bytes": prometheus.NewDesc(
-				"system_memory_total_swap_bytes",
-				"Total system swap memory in bytes",
-				labels, nil,
-			),
-			"system_memory_used_swap_bytes": prometheus.NewDesc(
-				"system_memory_used_swap_bytes",
-				"Used system swap memory in bytes",
-				labels, nil,
-			),
-			"system_network_received_bytes": prometheus.NewDesc(
-				"system_network_received_bytes",
-				"Total network received bytes",
-				labels, nil,
-			),
-			"system_network_sent_bytes": prometheus.NewDesc(
-				"system_network_sent_bytes",
-				"Total network sent bytes",
-				labels, nil,
-			),
-			"typesense_memory_active_bytes": prometheus.NewDesc(
-				"typesense_memory_active_bytes",
-				"Typesense active memory usage in bytes",
-				labels, nil,
-			),
-			"typesense_memory_allocated_bytes": prometheus.NewDesc(
-				"typesense_memory_allocated_bytes",
-				"Typesense allocated memory in bytes",
-				labels, nil,
-			),
-			"typesense_memory_fragmentation_ratio": prometheus.NewDesc(
-				"typesense_memory_fragmentation_ratio",
-				"Typesense memory fragmentation ratio",
-				labels, nil,
-			),
-			"typesense_memory_mapped_bytes": prometheus.NewDesc(
-				"typesense_memory_mapped_bytes",
-				"Typesense memory mapped in bytes",
-				labels, nil,
-			),
-			"typesense_memory_metadata_bytes": prometheus.NewDesc(
-				"typesense_memory_metadata_bytes",
-				"Typesense memory metadata size in bytes",
-				labels, nil,
-			),
-			"typesense_memory_resident_bytes": prometheus.NewDesc(
-				"typesense_memory_resident_bytes",
-				"Typesense resident memory usage in bytes",
-				labels, nil,
-			),
-			"typesense_memory_retained_bytes": prometheus.NewDesc(
-				"typesense_memory_retained_bytes",
-				"Typesense retained memory in bytes",
-				labels, nil,
-			),
-		},
+		metrics: getMetricsDesc(),
+		stats:   getStatsDesc(),
 	}
 
 	return collector
@@ -149,43 +53,73 @@ func (c *TypesenseCollector) Describe(ch chan<- *prometheus.Desc) {
 	for _, metric := range c.metrics {
 		ch <- metric
 	}
+
+	for _, stat := range c.stats {
+		ch <- stat
+	}
 }
 
 // Collect fetches the metrics from the Typesense endpoint and sends them to the Prometheus channel
 func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
-	c.logger.Info("collecting metrics...", "cluster", c.cluster, "endpoint", c.endPoint)
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
 
-	req, err := http.NewRequestWithContext(c.ctx, http.MethodGet, fmt.Sprintf("%s/metrics.json", c.endPoint), nil)
+	targets := []string{"metrics", "stats"}
+	for _, target := range targets {
+		data, err := c.fetch(target)
+		if err != nil {
+			return
+		}
+
+		c.collect(target, data, ch)
+	}
+}
+
+func (c *TypesenseCollector) fetch(target string) (map[string]interface{}, error) {
+	start := time.Now()
+	url := fmt.Sprintf("%s/%s.json", c.endPoint, target)
+	c.logger.Info(fmt.Sprintf("collecting %s...", target), "cluster", c.cluster, "url", url)
+
+	req, err := http.NewRequestWithContext(c.ctx, http.MethodGet, url, nil)
 	if err != nil {
 		c.logger.Error(fmt.Sprintf("error creating request: %v", err))
-		return
+		return nil, err
 	}
 
 	req.Header.Set("x-typesense-api-key", c.apiKey)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		c.logger.Error(fmt.Sprintf("error fetching metrics: %v", err))
-		return
+		c.logger.Error(fmt.Sprintf("error fetching %s: %v", target, err))
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		c.logger.Error(fmt.Sprintf("error fetching metrics: %v", resp.Status))
+		c.logger.Error(fmt.Sprintf("error fetching %s: %v", target, resp.Status))
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		c.logger.Error(fmt.Sprintf("error reading response body: %v", err))
-		return
+		c.logger.Error(fmt.Sprintf("error reading response body from %s: %v", url, err))
+		return nil, err
 	}
 
-	var data map[string]string
+	var data map[string]interface{}
 	if err := json.Unmarshal(body, &data); err != nil {
-		c.logger.Error(fmt.Sprintf("error unmarshalling metrics.json body: %v", err))
-		return
+		c.logger.Error(fmt.Sprintf("error unmarshalling %s.json body: %v", target, err))
+		return nil, err
 	}
 
+	defer func(count int) {
+		elapsed := time.Since(start)
+		c.logger.Info(fmt.Sprintf("collecting %s completed", target), "count", count, "duration", elapsed)
+	}(len(data))
+
+	return data, nil
+}
+
+func (c *TypesenseCollector) collect(target string, data map[string]interface{}, ch chan<- prometheus.Metric) {
 	for key, value := range data {
 		select {
 		case <-c.ctx.Done():
@@ -194,17 +128,45 @@ func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
 		default:
 		}
 
-		if desc, ok := c.metrics[key]; ok {
-			val, err := strconv.ParseFloat(value, 64)
-			if err != nil {
-				c.logger.Error(fmt.Sprintf("error converting value for %s: %v", key, err))
-				continue
+		switch target {
+		case "metrics":
+			if desc, ok := c.metrics[key]; ok {
+				if sval, ok := value.(string); ok {
+					val, err := strconv.ParseFloat(sval, 64)
+					if err != nil {
+						c.logger.Error(fmt.Sprintf("error converting value for %s: %v", key, err))
+						continue
+					}
+					metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
+					c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "value", val)
+
+					ch <- metric
+				}
 			}
+		case "stats":
+			if nestedData, ok := data[key]; ok {
+				if endpoints, ok := nestedData.(map[string]interface{}); ok {
+					for endpoint, endpointVal := range endpoints {
+						if desc, ok := c.stats[key]; ok {
+							if val, ok := endpointVal.(float64); ok {
+								stat := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster, endpoint)
+								c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "endpoint", endpoint, "value", val)
 
-			metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
-			c.logger.Debug("collected metric", "fqName", key, "value", val)
+								ch <- stat
+							}
+						}
+					}
+				} else {
+					if desc, ok := c.stats[key]; ok {
+						if val, ok := value.(float64); ok {
+							stat := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
+							c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "value", val)
 
-			ch <- metric
+							ch <- stat
+						}
+					}
+				}
+			}
 		}
 	}
 }
