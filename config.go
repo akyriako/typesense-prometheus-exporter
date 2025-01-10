@@ -7,8 +7,7 @@ type Config struct {
 	ApiPort     uint   `env:"TYPESENSE_PORT" envDefault:"8108"`
 	MetricsPort uint   `env:"METRICS_PORT" envDefault:"8908"`
 	Protocol    string `env:"TYPESENSE_PROTOCOL" envDefault:"http"`
-	//Namespace   string `env:"POD_NAMESPACE,required" envDefault:"~empty"`
-	Cluster string `env:"TYPESENSE_CLUSTER,required"`
+	Cluster     string `env:"TYPESENSE_CLUSTER,required"`
 }
 
 const LandingPageTemplate = `

@@ -1,11 +1,8 @@
 # typesense-prometheus-exporter
 
-`typesense-prometheus-exporter` is a lightweight Prometheus exporter designed to expose metrics from a Typesense cluster for monitoring and alerting purposes. The exporter collects metrics from the Typesense `/metrics.json` endpoint and presents them in a Prometheus-compatible format, enriched with Kubernetes-specific labels.
-
-### **Features**
-- Fetches and exposes key performance and resource utilization metrics from Typesense clusters.
-- Supports Kubernetes environments with labels for `namespace` and `typesense_cluster` for better observability.
-- Fully configurable through environment variables.
+`typesense-prometheus-exporter` is a lightweight Prometheus exporter designed to expose metrics from a Typesense cluster 
+for monitoring and alerting purposes. The exporter collects metrics from the Typesense `/metrics.json` endpoint and 
+presents them in a Prometheus-compatible format.
 
 ### **Usage**
 
@@ -26,7 +23,7 @@
 3. Run the binary with the required environment variables:
 
    ```bash
-   LOG_LEVEL=1 TYPESENSE_API_KEY=your-api-key \
+   LOG_LEVEL=0 TYPESENSE_API_KEY=your-api-key \
    TYPESENSE_HOST=your-host TYPESENSE_PORT=8108 \
    METRICS_PORT=8908 TYPESENSE_PROTOCOL=http \
    POD_NAMESPACE=default TYPESENSE_CLUSTER=your-cluster-name \
@@ -93,7 +90,6 @@ The `typesense-prometheus-exporter` is configured via environment variables. Bel
 | `TYPESENSE_PORT`     | `uint`   | `8108`      | No           | The port number of the Typesense API endpoint.                      |
 | `METRICS_PORT`       | `uint`   | `8908`      | No           | The port number for serving the Prometheus metrics endpoint.        |
 | `TYPESENSE_PROTOCOL` | `string` | `http`      | No           | Protocol used for communication with Typesense (`http` or `https`). |
-| `POD_NAMESPACE`      | `string` | `~empty`    | No           | The Kubernetes namespace where the pod is running.                  |
 | `TYPESENSE_CLUSTER`  | `string` | -           | Yes          | The name of the Typesense cluster, used for labeling metrics.       |
 
 ### **Metrics**
@@ -104,9 +100,7 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 - **Network Activity**: Total bytes sent and received.
 - **Typesense-specific Metrics**: Fragmentation ratios, mapped memory, and more.
 
-Each metric is labeled with:
-- `namespace`: The Kubernetes namespace where the exporter is running.
-- `typesense_cluster`: The name of the Typesense cluster.
+Each metric is labeled with `typesense_cluster` as the name of the Typesense cluster you want to scrape for metrics.
 
 ### **Build and Push Docker Image**
 
@@ -114,12 +108,12 @@ You can build and push the Docker image using the provided `Makefile`.
 
 ```bash
 # Build the Docker image
-make docker-build REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter TAG=latest
+make docker-build REGISTRY=your-registry IMAGE_NAME=typesense-prometheus-exporter TAG=latest
 ```
 
 ```bash
 # Push the Docker image to the registry
-make docker-push REGISTRY=myregistry.io IMAGE_NAME=typesense-prometheus-exporter TAG=latest
+make docker-push REGISTRY=your-registry IMAGE_NAME=typesense-prometheus-exporter TAG=latest
 ```
 
 Ensure the `REGISTRY`, `IMAGE_NAME`, and `TAG` variables are properly set.

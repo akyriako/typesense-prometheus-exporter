@@ -35,7 +35,6 @@ func init() {
 		Level: slog.Level(config.LogLevel),
 	}))
 
-	//logger = logger.With("namespace", config.Namespace).With("cluster", config.Cluster)
 	slog.SetDefault(logger)
 }
 
