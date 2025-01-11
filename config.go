@@ -55,7 +55,7 @@ const LandingPageTemplate = `
 				<div class="container">
 					<img src="https://prometheus.io/assets/prometheus_logo_grey.svg" alt="Prometheus Logo"/><br/>
 					<img src="https://typesense.org/_nuxt/img/typesense_logo_white.0f9fb0a.svg" alt="Typesense Logo"/>
-					<p><a href="/metrics">Go to Metrics</a></p>
+					<p><a href="/metrics">Go to Metrics & Stats</a></p>
 				</div>
 			</body>
 			</html>
