@@ -50,6 +50,9 @@ services:
       - "8908:8908"
 ```
 
+![image](https://github.com/user-attachments/assets/c2ccdfe3-1c37-49f0-acda-6b44950c2096)
+
+
 #### **Running in Kubernetes**
 
 0. If you are not having a Prometheus instance, deploy one with kube-prometheus-stack
@@ -159,6 +162,9 @@ spec:
 > 2. Add an extra label in `metadata.Labels`, with key `release` and value the the **release name** you provided when you deployed
 > your **kube-prometheus-stack** Helm Chart. Without this label, Prometheus will **not** automatically pick up this endpoint in 
 > its target. It is not well documented in Prometheus documentation, but it's the _secret sauce_.
+
+![image](https://github.com/user-attachments/assets/084f6fe9-2342-427f-9686-d63461507afa)
+
 
 #### Import Grafana Dashboards
 
