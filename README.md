@@ -138,7 +138,7 @@ spec:
 > but make sure you set a matching value for both `metadata.namespace` and `spec.namespaceSelector.matchNames`.
 > 2. Add an extra label in `metadata.Labels`, with key `release` and value the the **release name** you provided when you deployed
 > your **kube-prometheus-stack** Helm Chart. Without this label, Prometheus will **not** automatically pick up this endpoint in 
-> its target. It is not well documented, but it is the secret sauce.
+> its target. It is not well documented in Prometheus documentation, but it's the _secret sauce_.
 
 ### **Configuration**
 
