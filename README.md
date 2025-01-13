@@ -30,6 +30,26 @@ for monitoring and alerting purposes. The exporter collects metrics from the Typ
    ./cmd/typesense-prometheus-exporter
    ```
 
+#### **Running in Docker**
+
+```bash
+version: '3.8'
+
+services:
+  typesense-prometheus-exporter:
+    image: akyriako78/typesense-prometheus-exporter:0.1.6
+    container_name: typesense-prometheus-exporter
+    environment:
+      LOG_LEVEL: "0"
+      TYPESENSE_API_KEY: "${TYPESENSE_API_KEY}" # Use an .env file or environment variable for secrets
+      TYPESENSE_HOST: "ts.example.com"
+      TYPESENSE_PORT: "8108"
+      TYPESENSE_PROTOCOL: "http"
+      TYPESENSE_CLUSTER: "ts"
+    ports:
+      - "8908:8908"
+```
+
 #### **Running in Kubernetes**
 
 0. If you are not having a Prometheus instance, deploy one with kube-prometheus-stack
@@ -75,7 +95,7 @@ spec:
                          key: typesense-api-key
                  - name: TYPESENSE_HOST
                    value: ts.example.com
-                 - name: ts-svc
+                 - name: TYPESENSE_PORT
                    value: "8108"
                  - name: TYPESENSE_PROTOCOL
                    value: "http"
