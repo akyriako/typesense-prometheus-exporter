@@ -61,8 +61,15 @@ func (c *TypesenseCollector) Describe(ch chan<- *prometheus.Desc) {
 
 // Collect fetches the metrics from the Typesense endpoint and sends them to the Prometheus channel
 func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
+	start := time.Now()
+	c.logger.Info(fmt.Sprintf("collecting data"), "cluster", c.cluster, "endpoint", c.endPoint)
+
 	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	defer func() {
+		elapsed := time.Since(start)
+		c.logger.Info(fmt.Sprintf("collecting data completed"), "duration", elapsed)
+		c.mutex.Unlock()
+	}()
 
 	targets := []string{"metrics", "stats"}
 	for _, target := range targets {
@@ -76,9 +83,8 @@ func (c *TypesenseCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *TypesenseCollector) fetch(target string) (map[string]interface{}, error) {
-	start := time.Now()
 	url := fmt.Sprintf("%s/%s.json", c.endPoint, target)
-	c.logger.Info(fmt.Sprintf("collecting %s...", target), "cluster", c.cluster, "url", url)
+	c.logger.Info(fmt.Sprintf("collecting %s", target), "cluster", c.cluster, "url", url)
 
 	req, err := http.NewRequestWithContext(c.ctx, http.MethodGet, url, nil)
 	if err != nil {
@@ -110,11 +116,6 @@ func (c *TypesenseCollector) fetch(target string) (map[string]interface{}, error
 		c.logger.Error(fmt.Sprintf("error unmarshalling %s.json body: %v", target, err))
 		return nil, err
 	}
-
-	defer func(count int) {
-		elapsed := time.Since(start)
-		c.logger.Info(fmt.Sprintf("collecting %s completed", target), "count", count, "duration", elapsed)
-	}(len(data))
 
 	return data, nil
 }
