@@ -160,6 +160,10 @@ spec:
 > your **kube-prometheus-stack** Helm Chart. Without this label, Prometheus will **not** automatically pick up this endpoint in 
 > its target. It is not well documented in Prometheus documentation, but it's the _secret sauce_.
 
+#### Import Grafana Dashboards
+
+Open your Grafana installation and import the dashboards found in **assets/grafana**. There is one for metrics and one for stats.
+
 ### **Configuration**
 
 The `typesense-prometheus-exporter` is configured via environment variables. Below is a table of the available configuration options:
