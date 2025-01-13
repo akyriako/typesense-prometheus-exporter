@@ -174,6 +174,8 @@ spec:
 
 Open your Grafana installation and import the dashboards found in **assets/grafana**. There is one for metrics and one for stats.
 
+![image](https://github.com/user-attachments/assets/606e182a-867f-4c62-8668-e6cdc5d2ddb0)
+
 ### **Configuration**
 
 The `typesense-prometheus-exporter` is configured via environment variables. Below is a table of the available configuration options:
