@@ -164,8 +164,8 @@ spec:
 > 1. Put the `ServiceMonitor` in any namespace you want (either the one hosting your workload or the one hosting Prometheus)
 > but make sure `spec.namespaceSelector.matchNames` is pointing to the namespace your `Service` is deployed at.
 > 2. Add an extra label in `metadata.Labels`, with key `release` and value the the **release name** you provided when you deployed
-> your **kube-prometheus-stack** Helm Chart. Without this label, Prometheus will **not** automatically pick up this endpoint in 
-> its target. It is not well documented in Prometheus documentation, but it's the _secret sauce_.
+> your **kube-prometheus-stack** Helm Chart. Without this label, Prometheus will **not** automatically pick up this endpoint as 
+> one of its target. It is not well documented in Prometheus documentation, but it's the _secret sauce_.
 
 ![image](https://github.com/user-attachments/assets/084f6fe9-2342-427f-9686-d63461507afa)
 
