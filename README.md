@@ -101,7 +101,7 @@ spec:
                          name: ts-api-key
                          key: typesense-api-key
                  - name: TYPESENSE_HOST
-                   value: ts.example.com
+                   value: ts-svc.default.svc.cluster.local
                  - name: TYPESENSE_PORT
                    value: "8108"
                  - name: TYPESENSE_PROTOCOL
