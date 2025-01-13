@@ -32,6 +32,8 @@ for monitoring and alerting purposes. The exporter collects metrics from the Typ
 
 #### **Running in Docker**
 
+1. Deploy typesense-prometheus-exporter as a stand-alone stack with docker-compose:
+
 ```bash
 version: '3.8'
 
@@ -49,6 +51,8 @@ services:
     ports:
       - "8908:8908"
 ```
+
+2. Open http://localhost:8908 in your browser:
 
 ![image](https://github.com/user-attachments/assets/c2ccdfe3-1c37-49f0-acda-6b44950c2096)
 
