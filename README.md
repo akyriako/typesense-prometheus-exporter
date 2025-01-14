@@ -169,6 +169,7 @@ spec:
 
 ![image](https://github.com/user-attachments/assets/084f6fe9-2342-427f-9686-d63461507afa)
 
+![image](https://github.com/user-attachments/assets/04a03c85-5b86-4f37-ada6-9f300a0a811d)
 
 #### Import Grafana Dashboards
 
