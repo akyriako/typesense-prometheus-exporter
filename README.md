@@ -39,7 +39,7 @@ version: '3.8'
 
 services:
   typesense-prometheus-exporter:
-    image: akyriako78/typesense-prometheus-exporter:0.1.6
+    image: akyriako78/typesense-prometheus-exporter:0.1.7
     container_name: typesense-prometheus-exporter
     environment:
       LOG_LEVEL: "0"
@@ -91,7 +91,7 @@ spec:
       spec:
          containers:
             - name: typesense-prometheus-exporter
-              image: akyriako78/typesense-prometheus-exporter:0.1.6
+              image: akyriako78/typesense-prometheus-exporter:0.1.7
               env:
                  - name: LOG_LEVEL
                    value: "0"
@@ -201,8 +201,9 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 > [!NOTE]
 > - Each **metric** is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch metrics from.
 > - Each **stat** is labeled with `typesense_cluster` as the name of the Typesense cluster you want to fetch stats from,
-> and additionally with `endpoint` if is reporting back the latency of an endpoint.
-
+> and additionally with `typesense_request` for any metrics reporting back on individual requests.
+> - All FQDNs for Prometheus Descriptors collected from **metrics** are prefixed with `typesense_metrics_` 
+> - All FQDNs for Prometheus Descriptors collected from **stats** are prefixed with `typesense_stats_`
 
 ### **Build and Push Docker Image**
 
