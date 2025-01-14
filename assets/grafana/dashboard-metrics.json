@@ -108,7 +108,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_cpu_active_percentage",
+          "expr": "typesense_metrics_system_cpu_active_percentage",
           "legendFormat": "System CPU",
           "refId": "A"
         },
@@ -117,7 +117,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_cpu1_active_percentage",
+          "expr": "typesense_metrics_system_cpu1_active_percentage",
           "legendFormat": "CPU1",
           "refId": "B"
         },
@@ -126,7 +126,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_cpu2_active_percentage",
+          "expr": "typesense_metrics_system_cpu2_active_percentage",
           "legendFormat": "CPU2",
           "refId": "C"
         },
@@ -135,7 +135,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_cpu3_active_percentage",
+          "expr": "typesense_metrics_system_cpu3_active_percentage",
           "legendFormat": "CPU3",
           "refId": "D"
         },
@@ -144,7 +144,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_cpu4_active_percentage",
+          "expr": "typesense_metrics_system_cpu4_active_percentage",
           "legendFormat": "CPU4",
           "refId": "E"
         }
@@ -239,7 +239,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_memory_total_bytes",
+          "expr": "typesense_metrics_system_memory_total_bytes",
           "legendFormat": "Total Memory",
           "refId": "A"
         },
@@ -248,7 +248,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_memory_used_bytes",
+          "expr": "typesense_metrics_system_memory_used_bytes",
           "legendFormat": "Used Memory",
           "refId": "B"
         },
@@ -257,7 +257,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_memory_total_swap_bytes",
+          "expr": "typesense_metrics_system_memory_total_swap_bytes",
           "legendFormat": "Total Swap",
           "refId": "C"
         },
@@ -266,7 +266,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_memory_used_swap_bytes",
+          "expr": "typesense_metrics_system_memory_used_swap_bytes",
           "legendFormat": "Used Swap",
           "refId": "D"
         }
@@ -361,7 +361,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_disk_total_bytes",
+          "expr": "typesense_metrics_system_disk_total_bytes",
           "legendFormat": "Total Disk",
           "refId": "A"
         },
@@ -370,7 +370,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "system_disk_used_bytes",
+          "expr": "typesense_metrics_system_disk_used_bytes",
           "legendFormat": "Used Disk",
           "refId": "B"
         }
@@ -466,7 +466,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "-system_network_received_bytes",
+          "expr": "-typesense_metrics_system_network_received_bytes",
           "legendFormat": "Received Bytes",
           "range": true,
           "refId": "A"
@@ -477,7 +477,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "system_network_sent_bytes",
+          "expr": "typesense_metrics_system_network_sent_bytes",
           "legendFormat": "Sent Bytes",
           "range": true,
           "refId": "B"
@@ -573,7 +573,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_active_bytes",
+          "expr": "typesense_metrics_memory_active_bytes",
           "legendFormat": "Active Memory",
           "refId": "A"
         },
@@ -582,7 +582,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_allocated_bytes",
+          "expr": "typesense_metrics_memory_allocated_bytes",
           "legendFormat": "Allocated Memory",
           "refId": "B"
         },
@@ -591,7 +591,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_fragmentation_ratio",
+          "expr": "typesense_metrics_memory_fragmentation_ratio",
           "legendFormat": "Fragmentation Ratio",
           "refId": "C"
         },
@@ -600,7 +600,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_mapped_bytes",
+          "expr": "typesense_metrics_memory_mapped_bytes",
           "legendFormat": "Mapped Memory",
           "refId": "D"
         },
@@ -609,7 +609,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_metadata_bytes",
+          "expr": "typesense_metrics_memory_metadata_bytes",
           "legendFormat": "Metadata Memory",
           "refId": "E"
         },
@@ -618,7 +618,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_resident_bytes",
+          "expr": "typesense_metrics_memory_resident_bytes",
           "legendFormat": "Resident Memory",
           "refId": "F"
         },
@@ -627,7 +627,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "typesense_memory_retained_bytes",
+          "expr": "typesense_metrics_memory_retained_bytes",
           "legendFormat": "Retained Memory",
           "refId": "G"
         }

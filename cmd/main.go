@@ -43,9 +43,10 @@ func main() {
 	defer cancel()
 
 	collector := exporter.NewTypesenseCollector(ctx, logger, config)
-	prometheus.MustRegister(collector)
+	registry := prometheus.NewRegistry()
+	registry.MustRegister(collector)
 
-	http.Handle("/metrics", promhttp.Handler())
+	http.Handle("/metrics", promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		landingPage := exporter.LandingPageTemplate

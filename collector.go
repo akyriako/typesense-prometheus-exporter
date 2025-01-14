@@ -139,7 +139,7 @@ func (c *TypesenseCollector) collect(target string, data map[string]interface{},
 						continue
 					}
 					metric := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
-					c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "value", val)
+					c.logger.Debug(fmt.Sprintf("collected %s", target), "key", key, "value", val)
 
 					ch <- metric
 				}
@@ -151,7 +151,7 @@ func (c *TypesenseCollector) collect(target string, data map[string]interface{},
 						if desc, ok := c.stats[key]; ok {
 							if val, ok := endpointVal.(float64); ok {
 								stat := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster, endpoint)
-								c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "endpoint", endpoint, "value", val)
+								c.logger.Debug(fmt.Sprintf("collected %s", target), "key", key, "endpoint", endpoint, "value", val)
 
 								ch <- stat
 							}
@@ -161,7 +161,7 @@ func (c *TypesenseCollector) collect(target string, data map[string]interface{},
 					if desc, ok := c.stats[key]; ok {
 						if val, ok := value.(float64); ok {
 							stat := prometheus.MustNewConstMetric(desc, prometheus.GaugeValue, val, c.cluster)
-							c.logger.Debug(fmt.Sprintf("collected %s", target), "fqName", key, "value", val)
+							c.logger.Debug(fmt.Sprintf("collected %s", target), "key", key, "value", val)
 
 							ch <- stat
 						}
