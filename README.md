@@ -169,8 +169,6 @@ spec:
 
 ![image](https://github.com/user-attachments/assets/084f6fe9-2342-427f-9686-d63461507afa)
 
-![image](https://github.com/user-attachments/assets/04a03c85-5b86-4f37-ada6-9f300a0a811d)
-
 #### Import Grafana Dashboards
 
 Open your Grafana installation and import the dashboards found in **assets/grafana**. There is one for metrics and one for stats.
@@ -205,6 +203,8 @@ The exporter gathers various metrics from the Typesense `/metrics.json` endpoint
 > and additionally with `typesense_request` for any metrics reporting back on individual requests.
 > - All FQDNs for Prometheus Descriptors collected from **metrics** are prefixed with `typesense_metrics_` 
 > - All FQDNs for Prometheus Descriptors collected from **stats** are prefixed with `typesense_stats_`
+
+![image](https://github.com/user-attachments/assets/04a03c85-5b86-4f37-ada6-9f300a0a811d)
 
 ### **Build and Push Docker Image**
 
